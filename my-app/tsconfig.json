@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -23,7 +24,7 @@
       "@/public/*": ["./public/*"],
       "@/components/*" :["./src/components/*"],
       "@/components/Layout/*" : ["./src/components/Layout/*"],
-      "@/components/modules/*" : ["./src/components/modules"],
+      "@/components/modules/*" : ["./src/components/modules/*"],
       "@/components/templates/*" : ["./src/components/templates"]
     }
   },
