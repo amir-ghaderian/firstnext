@@ -1,12 +1,45 @@
-import Image from "next/image";
+"use client";
+import {supabase} from "lib/supabase"
+
+
+
+import { useEffect, useState } from 'react';
+
 
 export default function Home() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const { data, error } = await supabase.from('users').select('*');
+
+      console.log("داده‌های دریافتی از Supabase:", data); // چاپ داده‌ها در کنسول
+
+      if (error) {
+        console.error('خطا در دریافت داده‌ها:', error);
+      } else {
+        setUsers(data || []); // اگر data مقدار null باشد، مقدار پیش‌فرض [] قرار می‌گیرد
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-     <h1>
-      مانتو سرمه
-     </h1>
-     
+    <div>
+      <h1>لیست کاربران</h1>
+      <ul>
+        {users.length > 0 ? (
+          users.map((user) => (
+            <li key={user}>
+             {user.created_at} - {user.role} - {user.email} - {user.id} 
+            </li>
+          ))
+        ) : (
+          <p>هیچ داده‌ای یافت نشد.</p>
+        )}
+      </ul>
     </div>
   );
 }
+
