@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [comments ,setComments] =useState([])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -19,8 +20,16 @@ export default function Home() {
       else console.error("خطا در دریافت پست‌ها:", error);
     };
 
+
+    const fetchComment = async () => {
+      const { data, error } = await supabase.from("comments").select("*");
+      if (!error) setComments(data || []);
+      else console.error("خطا در دریافت پست‌ها:", error);
+    };
+
     fetchUsers();
     fetchPosts();
+    fetchComment(); 
   }, []);
 
   return (
@@ -49,6 +58,18 @@ export default function Home() {
             <h3>{post.title}</h3>
             <p>{post.content}</p>
             <small>{new Date(post.created_at).toLocaleString()}</small>
+          </div>
+        ))
+      ) : (
+        <p>هیچ پستی یافت نشد.</p>
+      )}
+      <h2>📌 لیست کامنت</h2>
+      {comments.length > 0 ? (
+        comments.map((comment) => (
+          <div key={comment.id} style={{ border: "1px solid #ddd", padding: "10px", marginBottom: "10px" }}>
+            <h3>{comment.title}</h3>
+            <p>{comment.comment}</p>
+            <small>{new Date(comment.created_at).toLocaleString()}</small>
           </div>
         ))
       ) : (
